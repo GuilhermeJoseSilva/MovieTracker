@@ -1,5 +1,6 @@
 package com.example.movietracker.DAO
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -11,25 +12,20 @@ import com.example.movietracker.model.Movie
 @Dao
 interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovie(movie: Movie): Long
+    suspend fun insert(movie: Movie)
 
-    // Atualizar informações de um filme favorito
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(movies: List<Movie>)
+
     @Update
-    suspend fun updateMovie(movie: Movie)
+    suspend fun update(movie: Movie)
 
-    // Deletar um filme dos favoritos
     @Delete
-    suspend fun deleteMovie(movie: Movie)
+    suspend fun delete(movie: Movie)
 
-    // Listar todos os filmes favoritos
     @Query("SELECT * FROM movies ORDER BY title ASC")
-    suspend fun getAllMovies(): List<Movie>
+    suspend fun getAllMovies(): List<Movie>  // Busca todos os filmes
 
-    // Buscar um filme favorito por ID
-    @Query("SELECT * FROM movies WHERE tmdbId = :tmdbId LIMIT 1")
-    suspend fun getMovieById(tmdbId: Int): Movie?
-
-    // Verificar se um filme está nos favoritos
-    @Query("SELECT EXISTS(SELECT 1 FROM movies WHERE tmdbId = :tmdbId)")
-    suspend fun isFavorite(tmdbId: Int): Boolean
+    @Query("SELECT * FROM movies WHERE id = :movieId LIMIT 1")
+    suspend fun getMovieById(movieId: Int): Movie?
 }

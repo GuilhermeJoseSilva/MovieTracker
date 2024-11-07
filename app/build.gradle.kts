@@ -72,6 +72,7 @@ dependencies {
 
     // Room
     implementation("androidx.room:room-runtime:2.5.0")
+    implementation(libs.androidx.appcompat)
     kapt("androidx.room:room-compiler:2.5.0")
 
     // Coroutines
